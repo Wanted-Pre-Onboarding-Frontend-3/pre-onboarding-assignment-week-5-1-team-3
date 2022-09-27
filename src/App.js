@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import SearchBox from './components/SearchBox';
 import SearchResult from './components/SearchResult';
 
@@ -29,14 +30,26 @@ function App() {
 
 	return (
 		<>
-			<header>
-				<h1>질환을 검색해보세요</h1>
-			</header>
+			<Header>
+				<p>국내 모든 임상시험 검색하고 온라인으로 참여하기</p>
+			</Header>
 
 			<SearchBox onSearchChange={setKeyword} keyword={keyword} />
 			<SearchResult result={result} keyword={keyword} />
 		</>
 	);
 }
+
+const Header = styled.h1`
+	width: 490px;
+	text-align: center;
+	word-break: keep-all;
+	line-height: 1.6;
+	margin-top: 180px;
+	margin-bottom: 40px;
+	font-size: 2.125em;
+	font-weight: bold;
+	letter-spacing: -0.02em;
+`;
 
 export default App;
