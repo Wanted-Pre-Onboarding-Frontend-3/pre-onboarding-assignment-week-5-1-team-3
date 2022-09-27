@@ -1,10 +1,12 @@
+import { useRecoilValue } from 'recoil';
+import { isTouchedState } from '../recoil/atom';
+
 import styled from 'styled-components';
 
 const SearchResult = ({ result, keyword }) => {
+	const isTouched = useRecoilValue(isTouchedState);
 	// TODO: 사용자가 입력한 텍스트와 일치하는 부분 볼드처리
 	// TODO: 키보드만으로 추천 검색어들로 이동 가능하도록 구현
-
-	// TODO: input focus시 searchResult 열림
 
 	const renderResult = (
 		<>
@@ -22,7 +24,7 @@ const SearchResult = ({ result, keyword }) => {
 	);
 
 	return (
-		<Container>
+		<Container isTouched={isTouched}>
 			<section>최근검색어</section>
 			<section>
 				{keyword === '' && renderDefaultKeywords}
@@ -33,6 +35,8 @@ const SearchResult = ({ result, keyword }) => {
 	);
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+	display: ${props => (props.isTouched ? 'block' : 'none')};
+`;
 
 export default SearchResult;
