@@ -1,11 +1,11 @@
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isTouchedState } from '../recoil/atom';
 
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 
 const SearchBox = ({ onSearchChange, keyword }) => {
-	const setIsTouched = useSetRecoilState(isTouchedState);
+	const [isTouched, setIsTouched] = useRecoilState(isTouchedState);
 
 	const handleFocus = () => setIsTouched(true);
 	const handleBlur = () => setIsTouched(false);
@@ -18,7 +18,7 @@ const SearchBox = ({ onSearchChange, keyword }) => {
 	return (
 		<Form onSubmit={handleSearch}>
 			<label htmlFor="">
-				<Icon size="22" />
+				<Icon isTouched={isTouched} size="22" />
 
 				<input
 					type="text"
@@ -63,11 +63,20 @@ const Form = styled.form`
 				color: #aaa;
 				letter-spacing: -0.02em;
 			}
+
+			&:focus {
+				border: 2px solid #007be9;
+
+				&::placeholder {
+					color: transparent;
+				}
+			}
 		}
 	}
 `;
 
 const Icon = styled(BiSearch)`
+	display: ${({ isTouched }) => (isTouched ? 'none' : 'block')};
 	color: #aaa;
 	position: absolute;
 	left: 20px;
