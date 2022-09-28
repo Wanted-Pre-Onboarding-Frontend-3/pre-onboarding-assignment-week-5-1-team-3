@@ -45,7 +45,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 		alert('검색결과로 이동합니다');
 	};
 
-	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
+	const handleKeywords = ({ target }) => getEnterResult(target.innerText);
 
 	const handleSearchClick = () => getEnterResult(keyword);
 
@@ -102,7 +102,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 		<SuggestionSection>
 			<p>추천 검색어로 검색해보세요</p>
 			{defaultKeywords.map((item, i) => (
-				<DefaultKeyword key={item + i} onClick={hancldKeywords}>
+				<DefaultKeyword key={item + i} onClick={handleKeywords}>
 					{item}
 				</DefaultKeyword>
 			))}
@@ -118,7 +118,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 					<ResultList key={i} isFocus={resultIndex === i ? true : false}>
 						<BiSearch size="20" />
 						<button
-							onClick={hancldKeywords}
+							onClick={handleKeywords}
 							dangerouslySetInnerHTML={{
 								__html: item.sickNm.replace(regex, `<strong>${keyword}</strong>`),
 							}}
