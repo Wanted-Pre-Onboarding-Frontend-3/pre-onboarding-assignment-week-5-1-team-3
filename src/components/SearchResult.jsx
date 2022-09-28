@@ -1,41 +1,50 @@
-import { useRecoilValue } from 'recoil';
-import { isTouchedState } from '../recoil/atom';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { keywordState, isTouchedState } from '../recoil/atom';
 
 import styled from 'styled-components';
+import { BiSearch } from 'react-icons/bi';
 
-const SearchResult = ({ result, keyword }) => {
+const SearchResult = ({ result }) => {
 	const isTouched = useRecoilValue(isTouchedState);
+	const [keyword, setKeyword] = useRecoilState(keywordState);
 	// TODO: 사용자가 입력한 텍스트와 일치하는 부분 볼드처리
 	// TODO: 키보드만으로 추천 검색어들로 이동 가능하도록 구현
 
-	const renderResult = (
-		<>
-			<p>추천 검색어</p>
-			{result.map(item => item.sickNm)}
-		</>
-	);
+	const hancldKeywords = ({ target }) => setKeyword(target.innerText);
 
 	const defaultKeywords = ['B형간염', '비만', '관절염', '우울증', '식도염'];
 
-	const renderDefaultKeywords = (
+	const renderDefaultKeywords = keyword === '' && (
 		<>
 			<p>추천 검색어로 검색해보세요</p>
-			{defaultKeywords.map((item, i) => (
-				<button key={i}>{item}</button>
+			{defaultKeywords.map(item => (
+				<button key={item} onClick={hancldKeywords}>
+					{item}
+				</button>
+			))}
+		</>
+	);
+
+	const renderResult = keyword && result && (
+		<>
+			<p>추천 검색어</p>
+			{result.map(item => (
+				<List key={item.sickNm}>
+					<BiSearch size="20" />
+					{item.sickNm}
+				</List>
 			))}
 		</>
 	);
 
 	return (
-		<Container isTouched={isTouched}>
-			<Section>
-				<p>최근 검색어</p>
-			</Section>
+		<Container istouched={isTouched}>
+			<Results>{keyword && <p>최근 검색어</p>}</Results>
 
-			<Section>
-				{keyword === '' && renderDefaultKeywords}
-				{keyword && result && renderResult}
-			</Section>
+			<Results>
+				{renderDefaultKeywords}
+				{renderResult}
+			</Results>
 
 			{keyword && result.length === 0 && <p>검색어 없음</p>}
 		</Container>
@@ -43,7 +52,7 @@ const SearchResult = ({ result, keyword }) => {
 };
 
 const Container = styled.div`
-	display: ${({ isTouched }) => (isTouched ? 'block' : 'none')};
+	display: ${({ istouched }) => (istouched ? 'block' : 'none')};
 	width: 490px;
 	background-color: white;
 	margin-top: 8px;
@@ -58,7 +67,7 @@ const Container = styled.div`
 	}
 `;
 
-const Section = styled.section`
+const Results = styled.ul`
 	padding: 24px;
 
 	&:first-child {
@@ -73,6 +82,20 @@ const Section = styled.section`
 		letter-spacing: -0.02em;
 		margin-right: 8px;
 		border-radius: 24px;
+	}
+`;
+
+const List = styled.li`
+	display: flex;
+	align-items: center;
+	margin-bottom: 12px;
+	font-size: 1.1em;
+	font-weight: bold;
+	letter-spacing: -0.02em;
+
+	svg {
+		color: #aaa;
+		margin-right: 8px;
 	}
 `;
 

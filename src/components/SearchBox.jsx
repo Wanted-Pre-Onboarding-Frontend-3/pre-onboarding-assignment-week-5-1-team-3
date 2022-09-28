@@ -1,11 +1,12 @@
 import { useRecoilState } from 'recoil';
-import { isTouchedState } from '../recoil/atom';
+import { keywordState, isTouchedState } from '../recoil/atom';
 
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 
-const SearchBox = ({ onSearchChange, keyword }) => {
+const SearchBox = () => {
 	const [isTouched, setIsTouched] = useRecoilState(isTouchedState);
+	const [keyword, setKeyword] = useRecoilState(keywordState);
 
 	const handleFocus = () => setIsTouched(true);
 	const handleBlur = () => setIsTouched(false);
@@ -18,13 +19,13 @@ const SearchBox = ({ onSearchChange, keyword }) => {
 	return (
 		<Form onSubmit={handleSearch}>
 			<label htmlFor="">
-				<Icon isTouched={isTouched} size="22" />
+				<Icon istouched={isTouched} size="22" />
 
 				<input
 					type="text"
-					onChange={({ target }) => onSearchChange(target.value)}
+					onChange={({ target }) => setKeyword(target.value)}
 					onFocus={handleFocus}
-					onBlur={handleBlur}
+					// onBlur={handleBlur}
 					value={keyword}
 					placeholder="질환명을 입력해주세요."
 				/>
@@ -55,13 +56,13 @@ const Form = styled.form`
 			border-color: white;
 			text-indent: 16px;
 			caret-color: #007be9;
+			font-size: 1.3em;
+			font-weight: bold;
+			letter-spacing: -0.02em;
 			line-height: 1.6;
 
 			&::placeholder {
-				font-size: 1.3em;
-				font-weight: bold;
 				color: #aaa;
-				letter-spacing: -0.02em;
 			}
 
 			&:focus {
