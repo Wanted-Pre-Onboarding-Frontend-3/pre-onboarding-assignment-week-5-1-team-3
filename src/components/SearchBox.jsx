@@ -24,15 +24,16 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [isComposing, setIsComposing] = useState(false);
 
 	const resultsRef = useRef(null);
+	const resultSectionRef = useRef(null);
 
 	useEffect(() => {
 		const handleClickOutside = e => {
-			if (isFocus && !resultsRef.current.contains(e.target)) setIsFocus(false);
+			if (isFocus && !resultSectionRef.current.contains(e.target)) setIsFocus(false);
 		};
 		document.addEventListener('mousedown', handleClickOutside);
 
 		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [isFocus, resultsRef]);
+	}, [isFocus, resultSectionRef]);
 
 	useEffect(() => {
 		if (movePage) {
@@ -44,12 +45,10 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const getEnterResult = value => {
 		setMovePage(true);
 		setKeyword(value);
-		alert('검색결과로 이동합니다');
+		alert('검색결과 페이지로 이동합니다');
 	};
 
 	const handleKeywords = ({ target }) => getEnterResult(target.innerText);
-
-	const handleSearchClick = () => getEnterResult(keyword);
 
 	const resultCount = resultsRef.current?.childElementCount;
 	const currentList = resultsRef.current?.children[resultIndex]?.innerText;
@@ -78,6 +77,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 			case ENTER:
 				setResultIndex(-1);
 				getEnterResult(currentList);
+				if (!currentList) setKeyword(keyword);
 				break;
 
 			default:
@@ -92,7 +92,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 				{recentSearch.length === 0 && <span>최근 검색어가 없습니다</span>}
 				{recentSearch.length > 0 &&
 					recentSearch?.map((item, i) => (
-						<button key={item + i} onClick={() => setKeyword(keyword)}>
+						<button key={item + i} onClick={({ target }) => getEnterResult(target.innerText)}>
 							<BiSearch size="20" />
 							{item}
 						</button>
@@ -155,13 +155,13 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 						placeholder="질환명을 입력해주세요."
 					/>
 
-					<SearchBtn onClick={handleSearchClick}>
+					<SearchBtn onClick={() => getEnterResult(keyword)}>
 						<BiSearch size="28" />
 					</SearchBtn>
 				</label>
 			</SearchSection>
 
-			<ResultSection isShow={isFocus}>
+			<ResultSection isShow={isFocus} ref={resultSectionRef}>
 				{!keyword && recentSearchKeyword}
 
 				{keyword && result && <p>추천 검색어</p>}
