@@ -1,6 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { keywordState } from '../recoil/atom';
 
 import { BiSearch } from 'react-icons/bi';
 import {
@@ -16,10 +14,9 @@ import {
 } from '../styles/serach-box';
 
 import { ARROW_DOWN, ARROW_UP, ESCAPE, ENTER } from './Search.constant';
+import { getRegexIgnoreWhitespaces } from '../utils/regex';
 
-const SearchResult = ({ result }) => {
-	const [keyword, setKeyword] = useRecoilState(keywordState);
-
+const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [isFocus, setIsFocus] = useState(false);
 	const [movePage, setMovePage] = useState(false);
 	const [resultIndex, setResultIndex] = useState(-1);
@@ -49,7 +46,7 @@ const SearchResult = ({ result }) => {
 		alert('검색결과로 이동합니다');
 	};
 
-	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
+	const handleKeywords = ({ target }) => getEnterResult(target.innerText);
 
 	const handleSearchClick = () => getEnterResult(keyword);
 
@@ -85,19 +82,18 @@ const SearchResult = ({ result }) => {
 	};
 
 	const recentSearchKeyword = (
-		<RecentSearch isShow={!keyword}>
+		<RecentSearch>
 			<p>최근 검색어</p>
-			{recentSearch.length > 0 && !keyword && (
-				<div>
-					{recentSearch.map((item, i) => (
-						// TODO : 클릭시 검색 input에 keyword 안들어감?
-						<button key={item + i} onClick={hancldKeywords}>
+			<div>
+				{recentSearch.length === 0 && <span>최근 검색어가 없습니다</span>}
+				{recentSearch.length > 0 &&
+					recentSearch?.map((item, i) => (
+						<button key={item + i} onClick={() => setKeyword(keyword)}>
 							<BiSearch size="20" />
 							{item}
 						</button>
 					))}
-				</div>
-			)}
+			</div>
 		</RecentSearch>
 	);
 
@@ -107,7 +103,7 @@ const SearchResult = ({ result }) => {
 		<SuggestionSection>
 			<p>추천 검색어로 검색해보세요</p>
 			{defaultKeywords.map((item, i) => (
-				<DefaultKeyword key={item + i} onClick={hancldKeywords}>
+				<DefaultKeyword key={item + i} onClick={handleKeywords}>
 					{item}
 				</DefaultKeyword>
 			))}
@@ -115,21 +111,23 @@ const SearchResult = ({ result }) => {
 	);
 
 	const searchResults = () => {
-		const regex = new RegExp(keyword, 'g');
-
+		const regex = getRegexIgnoreWhitespaces(keyword);
 		return (
 			<>
-				{result.map((item, i) => (
-					<ResultList key={i} isFocus={resultIndex === i ? true : false}>
-						<BiSearch size="20" />
-						<button
-							onClick={hancldKeywords}
-							dangerouslySetInnerHTML={{
-								__html: item.sickNm.replace(regex, `<strong>${keyword}</strong>`),
-							}}
-						/>
-					</ResultList>
-				))}
+				{result.map((item, i) => {
+					const match = item.sickNm.match(regex)?.[0];
+					return (
+						<ResultList key={i} isFocus={resultIndex === i ? true : false}>
+							<BiSearch size="20" />
+							<button
+								onClick={handleKeywords}
+								dangerouslySetInnerHTML={{
+									__html: item.sickNm.replace(regex, `<strong>${match}</strong>`),
+								}}
+							/>
+						</ResultList>
+					);
+				})}
 			</>
 		);
 	};
@@ -143,7 +141,7 @@ const SearchResult = ({ result }) => {
 					<SearchIcon size="22" />
 
 					<input
-						type="text"
+						type="search"
 						onChange={({ target }) => setKeyword(target.value)}
 						onKeyDown={handleArrowKey}
 						onFocus={() => setIsFocus(true)}
@@ -157,8 +155,9 @@ const SearchResult = ({ result }) => {
 				</label>
 			</SearchSection>
 
-			<ResultSection isFocus={() => setIsFocus(true)} isShow={isFocus}>
-				{recentSearchKeyword}
+			<ResultSection isShow={isFocus}>
+				{!keyword && recentSearchKeyword}
+
 				{keyword && result && <p>추천 검색어</p>}
 
 				<Results ref={resultsRef}>
