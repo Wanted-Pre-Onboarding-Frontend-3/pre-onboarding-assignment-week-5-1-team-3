@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { keywordState } from '../recoil/atom';
 
@@ -26,6 +26,15 @@ const SearchResult = ({ result }) => {
 
 	const resultsRef = useRef(null);
 
+	useEffect(() => {
+		const handleClickOutside = e => {
+			if (isFocus && !resultsRef.current.contains(e.target)) setIsFocus(false);
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, [isFocus, resultsRef]);
+
 	const resultCount = resultsRef.current?.childElementCount;
 	const currentList = resultsRef.current?.children[resultIndex]?.innerText;
 	const firstList = resultCount === resultIndex + 1;
@@ -33,11 +42,11 @@ const SearchResult = ({ result }) => {
 
 	const getEnterResult = value => {
 		setKeyword(value);
-		setRecentSearch([...recentSearch, keyword]); // 한박자 느림
 		alert('검색결과로 이동합니다');
+		setRecentSearch([...recentSearch, keyword]);
 	};
 
-	const hancldKeywords = ({ target }) => setKeyword(target.innerText);
+	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
 
 	const handleSearchClick = () => getEnterResult(keyword);
 

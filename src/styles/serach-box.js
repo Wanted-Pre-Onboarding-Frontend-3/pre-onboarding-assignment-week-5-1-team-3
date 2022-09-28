@@ -118,6 +118,10 @@ export const ResultList = styled.li`
 		color: #aaa;
 		margin-right: 8px;
 	}
+	button {
+		text-align: left;
+		width: 100%;
+	}
 `;
 
 export const Results = styled.ul`
