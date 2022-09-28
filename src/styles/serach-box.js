@@ -13,7 +13,7 @@ export const SearchSection = styled.section`
 			width: inherit;
 			height: inherit;
 			background-color: white;
-			padding: 20px 10px 20px 30px;
+			padding: 20px 65px 20px 30px;
 			border-radius: 42px;
 			border: 2px solid;
 			border-color: white;
@@ -27,13 +27,16 @@ export const SearchSection = styled.section`
 			&::placeholder {
 				color: #aaa;
 			}
-
 			&:focus {
 				border: 2px solid #007be9;
-
 				&::placeholder {
 					color: transparent;
 				}
+			}
+			&::-webkit-search-cancel-button {
+				width: 20px;
+				height: 20px;
+				cursor: pointer;
 			}
 		}
 	}
@@ -85,10 +88,17 @@ export const SuggestionSection = styled.section`
 `;
 
 export const RecentSearch = styled.section`
-	display: ${({ isShow }) => (isShow ? 'block' : 'none')};
 	align-items: center;
 
 	div {
+		span {
+			display: block;
+			padding: 0 0 20px 20px;
+			font-weight: bold;
+			font-size: 1.1em;
+			color: #aaa;
+		}
+
 		button {
 			width: 100%;
 			padding: 10px 20px;
