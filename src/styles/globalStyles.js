@@ -63,6 +63,10 @@ const GlobalStyles = createGlobalStyle`
   textarea:focus {
     outline: none;
   }
+
+  strong {
+    font-weight: bold;
+  }
 `;
 
 export default GlobalStyles;
