@@ -14,6 +14,7 @@ import {
 } from '../styles/serach-box';
 
 import { ARROW_DOWN, ARROW_UP, ESCAPE, ENTER } from './Search.constant';
+import { getRegexIgnoreWhitespaces } from '../utils/regex';
 
 const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [isFocus, setIsFocus] = useState(false);
@@ -110,21 +111,23 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	);
 
 	const searchResults = () => {
-		const regex = new RegExp(keyword.split('').join('\\s*'), 'gi');
-
+		const regex = getRegexIgnoreWhitespaces(keyword);
 		return (
 			<>
-				{result.map((item, i) => (
-					<ResultList key={i} isFocus={resultIndex === i ? true : false}>
-						<BiSearch size="20" />
-						<button
-							onClick={handleKeywords}
-							dangerouslySetInnerHTML={{
-								__html: item.sickNm.replace(regex, `<strong>${keyword}</strong>`),
-							}}
-						/>
-					</ResultList>
-				))}
+				{result.map((item, i) => {
+					const match = item.sickNm.match(regex)?.[0];
+					return (
+						<ResultList key={i} isFocus={resultIndex === i ? true : false}>
+							<BiSearch size="20" />
+							<button
+								onClick={handleKeywords}
+								dangerouslySetInnerHTML={{
+									__html: item.sickNm.replace(regex, `<strong>${match}</strong>`),
+								}}
+							/>
+						</ResultList>
+					);
+				})}
 			</>
 		);
 	};
