@@ -115,7 +115,7 @@ const SearchResult = ({ result }) => {
 	);
 
 	const searchResults = () => {
-		const regex = new RegExp(keyword, 'g');
+		const regex = new RegExp(keyword.split('').join('\\s*'), 'gi');
 
 		return (
 			<>
