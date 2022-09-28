@@ -31,6 +31,16 @@ const SearchResult = ({ result }) => {
 	const firstList = resultCount === resultIndex + 1;
 	const lastList = resultIndex <= 0;
 
+	const getEnterResult = value => {
+		setKeyword(value);
+		setRecentSearch([...recentSearch, keyword]); // 한박자 느림
+		alert('검색결과로 이동합니다');
+	};
+
+	const hancldKeywords = ({ target }) => setKeyword(target.innerText);
+
+	const handleSearchClick = () => getEnterResult(keyword);
+
 	const handleArrowKey = e => {
 		switch (e.key) {
 			case ARROW_DOWN:
@@ -49,21 +59,12 @@ const SearchResult = ({ result }) => {
 
 			case ENTER:
 				setResultIndex(-1);
-				setKeyword(currentList);
-				setRecentSearch([...recentSearch, keyword]); // 한박자 느림
-				alert('검색결과로 이동합니다');
+				getEnterResult(currentList);
 				break;
 
 			default:
 				break;
 		}
-	};
-
-	const hancldKeywords = ({ target }) => setKeyword(target.innerText);
-
-	const handleSearchClick = () => {
-		setKeyword(keyword);
-		alert('검색결과로 이동합니다');
 	};
 
 	const recentSearchKeyword = (

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './api';
 import { useEffect, useState } from 'react';
 
 import { useRecoilValue } from 'recoil';
@@ -13,8 +13,8 @@ const App = () => {
 	const [results, setResults] = useState([]);
 
 	const getResults = async () => {
-		const { data } = await axios.get('http://localhost:4000/sick');
-		console.info('calling api');
+		const { data } = await axiosInstance.get('/sick', { cache: true });
+		console.info('calling api'); // ?
 		return data;
 	};
 
