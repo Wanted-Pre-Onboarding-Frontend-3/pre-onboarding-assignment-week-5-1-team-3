@@ -22,15 +22,16 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [recentSearch, setRecentSearch] = useState([]);
 
 	const resultsRef = useRef(null);
+	const resultSectionRef = useRef(null);
 
 	useEffect(() => {
 		const handleClickOutside = e => {
-			if (isFocus && !resultsRef.current.contains(e.target)) setIsFocus(false);
+			if (isFocus && !resultSectionRef.current.contains(e.target)) setIsFocus(false);
 		};
 		document.addEventListener('mousedown', handleClickOutside);
 
 		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [isFocus, resultsRef]);
+	}, [isFocus, resultSectionRef]);
 
 	useEffect(() => {
 		if (movePage) {
@@ -86,7 +87,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 				{recentSearch.length === 0 && <span>최근 검색어가 없습니다</span>}
 				{recentSearch.length > 0 &&
 					recentSearch?.map((item, i) => (
-						<button key={item + i} onClick={() => getEnterResult(keyword)}>
+						<button key={item + i} onClick={({ target }) => getEnterResult(target.innerText)}>
 							<BiSearch size="20" />
 							{item}
 						</button>
@@ -151,7 +152,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 				</label>
 			</SearchSection>
 
-			<ResultSection isShow={isFocus}>
+			<ResultSection isShow={isFocus} ref={resultSectionRef}>
 				{!keyword && recentSearchKeyword}
 
 				{keyword && result && <p>추천 검색어</p>}
