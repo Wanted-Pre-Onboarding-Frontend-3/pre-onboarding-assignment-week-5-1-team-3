@@ -10,6 +10,7 @@ import SearchResult from './components/SearchResult';
 
 function App() {
 	const keyword = useRecoilValue(keywordState);
+
 	const [results, setResults] = useState([]);
 
 	// TODO: API 호출별로 로컬 캐싱 구현
@@ -39,7 +40,7 @@ function App() {
 			</Header>
 
 			<SearchBox />
-			<SearchResult result={results} keyword={keyword} />
+			<SearchResult result={results} />
 		</>
 	);
 }

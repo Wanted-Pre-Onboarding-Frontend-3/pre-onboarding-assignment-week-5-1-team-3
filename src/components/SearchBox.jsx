@@ -1,5 +1,6 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { keywordState, isTouchedState, recentSearchState } from '../recoil/atom';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { keywordState, isTouchedState, recentSearchState, resultIndexState, resultCountState } from '../recoil/atom';
+import { ARROW_DOWN, ARROW_UP, ESCAPE } from './Search.constant';
 
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
@@ -7,16 +8,35 @@ import { BiSearch } from 'react-icons/bi';
 const SearchBox = () => {
 	const [isTouched, setIsTouched] = useRecoilState(isTouchedState);
 	const [keyword, setKeyword] = useRecoilState(keywordState);
-	const setRecentSearch = useSetRecoilState(recentSearchState);
+	const [resultIndex, setResultIndex] = useRecoilState(resultIndexState);
+	const [recentSearch, setRecentSearch] = useRecoilState(recentSearchState);
 
-	const handleFocus = () => setIsTouched(true);
-	const handleBlur = () => setIsTouched(false);
+	const resultCount = useRecoilValue(resultCountState);
 
 	const handleSearch = e => {
 		e.preventDefault();
-		setRecentSearch(keyword);
-		alert('검색 결과로 이동합니다.');
+		setRecentSearch([...recentSearch, keyword]);
 		setKeyword('');
+	};
+
+	const handleArrowKey = e => {
+		if (e.key === ARROW_DOWN) {
+			if (resultCount === resultIndex + 1) {
+				setResultIndex(0);
+				return;
+			}
+			setResultIndex(prev => prev + 1);
+		}
+		if (e.key === ARROW_UP) {
+			if (resultIndex <= 0) {
+				setResultIndex(resultCount - 1);
+				return;
+			}
+			setResultIndex(prev => prev - 1);
+		}
+		if (e.key === ESCAPE) {
+			setKeyword('');
+		}
 	};
 
 	return (
@@ -27,8 +47,7 @@ const SearchBox = () => {
 				<input
 					type="text"
 					onChange={({ target }) => setKeyword(target.value)}
-					onFocus={handleFocus}
-					// onBlur={handleBlur}
+					onKeyDown={handleArrowKey}
 					value={keyword}
 					placeholder="질환명을 입력해주세요."
 				/>
