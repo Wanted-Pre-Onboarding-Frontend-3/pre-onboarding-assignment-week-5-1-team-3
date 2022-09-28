@@ -18,7 +18,7 @@ const App = () => {
 		}
 
 		const { data } = await axiosInstance.get('/sick', { cache: true });
-		storageSession.setSessionStorage(keywordTrim, JSON.stringify(data));
+
 		console.info('calling api'); // ?
 		return data;
 	};
@@ -33,6 +33,7 @@ const App = () => {
 			response = JSON.parse(sessionResult);
 		}
 		const results = response.filter(list => list.sickNm.search(keywordRegex) !== -1).slice(0, 10);
+		storageSession.setSessionStorage(keywordTrim, JSON.stringify(results));
 		setResults(results);
 	};
 
