@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 import SearchBox from './components/SearchBox';
+import { getRegexIgnoreWhitespaces } from './utils/regex';
 
 const App = () => {
 	const [keyword, setKeyword] = useState('');
@@ -16,7 +17,8 @@ const App = () => {
 
 	const filterResults = async () => {
 		const response = await getResults();
-		const results = response.filter(list => list.sickNm.includes(keyword)).slice(0, 10);
+		const keywordRegex = getRegexIgnoreWhitespaces(keyword);
+		const results = response.filter(list => list.sickNm.search(keywordRegex) !== -1).slice(0, 10);
 		setResults(results);
 	};
 
