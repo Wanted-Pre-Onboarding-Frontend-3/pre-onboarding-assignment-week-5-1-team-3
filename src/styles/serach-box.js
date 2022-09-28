@@ -112,8 +112,10 @@ export const ResultList = styled.li`
 	padding: 8px 20px;
 	font-size: 1.1em;
 	letter-spacing: -0.02em;
-	background-color: ${({ isFocus }) => (isFocus ? '#eee' : 'white')};
 
+	&:hover {
+		background-color: #eee;
+	}
 	svg {
 		color: #aaa;
 		margin-right: 8px;

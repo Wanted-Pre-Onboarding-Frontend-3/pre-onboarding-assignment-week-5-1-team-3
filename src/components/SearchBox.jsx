@@ -43,7 +43,7 @@ const SearchResult = ({ result }) => {
 	const getEnterResult = value => {
 		setKeyword(value);
 		alert('검색결과로 이동합니다');
-		setRecentSearch([...recentSearch, keyword]);
+		setRecentSearch([...recentSearch, keyword]); // TODO: 한박자 느리게 적용되서 최근 검색어에 빈칸으로 노출됨
 	};
 
 	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
@@ -81,8 +81,9 @@ const SearchResult = ({ result }) => {
 			<p>최근 검색어</p>
 			{recentSearch.length > 0 && !keyword && (
 				<div>
-					{recentSearch.map(item => (
-						<button key={item} onClick={hancldKeywords}>
+					{recentSearch.map((item, i) => (
+						// TODO : 클릭시 검색 input에 keyword 안들어감?
+						<button key={item + i} onClick={hancldKeywords}>
 							<BiSearch size="20" />
 							{item}
 						</button>
@@ -97,8 +98,8 @@ const SearchResult = ({ result }) => {
 	const keywordSuggestions = keyword === '' && (
 		<SuggestionSection>
 			<p>추천 검색어로 검색해보세요</p>
-			{defaultKeywords.map(item => (
-				<DefaultKeyword key={item} onClick={hancldKeywords}>
+			{defaultKeywords.map((item, i) => (
+				<DefaultKeyword key={item + i} onClick={hancldKeywords}>
 					{item}
 				</DefaultKeyword>
 			))}
@@ -113,7 +114,7 @@ const SearchResult = ({ result }) => {
 			result && (
 				<>
 					{result.map((item, i) => (
-						<ResultList key={i} isFocus={resultIndex === i ? true : false}>
+						<ResultList key={i}>
 							<BiSearch size="20" />
 							<button
 								onClick={hancldKeywords}

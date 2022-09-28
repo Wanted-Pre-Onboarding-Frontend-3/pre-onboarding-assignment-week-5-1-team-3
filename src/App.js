@@ -1,8 +1,8 @@
 import axiosInstance from './api';
 import { useEffect, useState } from 'react';
 
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { keywordState, isFocusState } from './recoil/atom';
+import { useRecoilValue } from 'recoil';
+import { keywordState } from './recoil/atom';
 
 import styled from 'styled-components';
 import SearchBox from './components/SearchBox';
