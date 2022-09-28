@@ -21,6 +21,7 @@ const SearchResult = ({ result }) => {
 	const [keyword, setKeyword] = useRecoilState(keywordState);
 
 	const [isFocus, setIsFocus] = useState(false);
+	const [movePage, setMovePage] = useState(false);
 	const [resultIndex, setResultIndex] = useState(-1);
 	const [recentSearch, setRecentSearch] = useState([]);
 
@@ -35,20 +36,27 @@ const SearchResult = ({ result }) => {
 		return () => document.removeEventListener('mousedown', handleClickOutside);
 	}, [isFocus, resultsRef]);
 
-	const resultCount = resultsRef.current?.childElementCount;
-	const currentList = resultsRef.current?.children[resultIndex]?.innerText;
-	const firstList = resultCount === resultIndex + 1;
-	const lastList = resultIndex <= 0;
+	useEffect(() => {
+		if (movePage) {
+			setRecentSearch([...recentSearch, keyword]);
+			setMovePage(false);
+		}
+	}, [movePage]);
 
 	const getEnterResult = value => {
+		setMovePage(true);
 		setKeyword(value);
 		alert('검색결과로 이동합니다');
-		setRecentSearch([...recentSearch, keyword]); // TODO: 한박자 느리게 적용되서 최근 검색어에 빈칸으로 노출됨
 	};
 
 	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
 
 	const handleSearchClick = () => getEnterResult(keyword);
+
+	const resultCount = resultsRef.current?.childElementCount;
+	const currentList = resultsRef.current?.children[resultIndex]?.innerText;
+	const firstList = resultCount === resultIndex + 1;
+	const lastList = resultIndex <= 0;
 
 	const handleArrowKey = e => {
 		switch (e.key) {
@@ -95,7 +103,7 @@ const SearchResult = ({ result }) => {
 
 	const defaultKeywords = ['B형간염', '비만', '관절염', '우울', '식도염'];
 
-	const keywordSuggestions = keyword === '' && (
+	const keywordSuggestions = (
 		<SuggestionSection>
 			<p>추천 검색어로 검색해보세요</p>
 			{defaultKeywords.map((item, i) => (
@@ -110,22 +118,19 @@ const SearchResult = ({ result }) => {
 		const regex = new RegExp(keyword, 'g');
 
 		return (
-			keyword &&
-			result && (
-				<>
-					{result.map((item, i) => (
-						<ResultList key={i}>
-							<BiSearch size="20" />
-							<button
-								onClick={hancldKeywords}
-								dangerouslySetInnerHTML={{
-									__html: item.sickNm.replace(regex, `<strong>${keyword}</strong>`),
-								}}
-							/>
-						</ResultList>
-					))}
-				</>
-			)
+			<>
+				{result.map((item, i) => (
+					<ResultList key={i} isFocus={resultIndex === i ? true : false}>
+						<BiSearch size="20" />
+						<button
+							onClick={hancldKeywords}
+							dangerouslySetInnerHTML={{
+								__html: item.sickNm.replace(regex, `<strong>${keyword}</strong>`),
+							}}
+						/>
+					</ResultList>
+				))}
+			</>
 		);
 	};
 
@@ -152,13 +157,13 @@ const SearchResult = ({ result }) => {
 				</label>
 			</SearchSection>
 
-			<ResultSection isfocus={isFocus}>
+			<ResultSection isFocus={() => setIsFocus(true)} isShow={isFocus}>
 				{recentSearchKeyword}
 				{keyword && result && <p>추천 검색어</p>}
 
 				<Results ref={resultsRef}>
-					{searchResults()}
-					{keywordSuggestions}
+					{keyword && result && searchResults()}
+					{keyword === '' && keywordSuggestions}
 					{noResult}
 				</Results>
 			</ResultSection>

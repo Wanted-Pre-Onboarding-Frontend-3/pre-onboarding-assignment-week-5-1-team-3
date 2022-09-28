@@ -59,7 +59,7 @@ export const SearchBtn = styled.button`
 `;
 
 export const ResultSection = styled.section`
-	display: ${({ isfocus }) => (isfocus ? 'block' : 'none')};
+	display: ${({ isShow }) => (isShow ? 'block' : 'none')};
 	width: 490px;
 	background-color: white;
 	margin-top: 8px;
@@ -112,6 +112,7 @@ export const ResultList = styled.li`
 	padding: 8px 20px;
 	font-size: 1.1em;
 	letter-spacing: -0.02em;
+	background-color: ${({ isFocus }) => (isFocus ? '#eee' : 'white')};
 
 	&:hover {
 		background-color: #eee;
