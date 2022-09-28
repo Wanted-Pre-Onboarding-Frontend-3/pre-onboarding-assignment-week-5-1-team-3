@@ -61,11 +61,6 @@ export const SearchBtn = styled.button`
 	color: white;
 `;
 
-export const ClearBtn = styled.button`
-	position: absolute;
-	right: 70px;
-`;
-
 export const ResultSection = styled.section`
 	display: ${({ isShow }) => (isShow ? 'block' : 'none')};
 	width: 490px;
