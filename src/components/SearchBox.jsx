@@ -42,12 +42,10 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const getEnterResult = value => {
 		setMovePage(true);
 		setKeyword(value);
-		alert('검색결과로 이동합니다');
+		alert('검색결과 페이지로 이동합니다');
 	};
 
 	const hancldKeywords = ({ target }) => getEnterResult(target.innerText);
-
-	const handleSearchClick = () => getEnterResult(keyword);
 
 	const resultCount = resultsRef.current?.childElementCount;
 	const currentList = resultsRef.current?.children[resultIndex]?.innerText;
@@ -73,6 +71,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 			case ENTER:
 				setResultIndex(-1);
 				getEnterResult(currentList);
+				if (!currentList) setKeyword(keyword);
 				break;
 
 			default:
@@ -87,7 +86,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 				{recentSearch.length === 0 && <span>최근 검색어가 없습니다</span>}
 				{recentSearch.length > 0 &&
 					recentSearch?.map((item, i) => (
-						<button key={item + i} onClick={() => setKeyword(keyword)}>
+						<button key={item + i} onClick={() => getEnterResult(keyword)}>
 							<BiSearch size="20" />
 							{item}
 						</button>
@@ -146,7 +145,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 						placeholder="질환명을 입력해주세요."
 					/>
 
-					<SearchBtn onClick={handleSearchClick}>
+					<SearchBtn onClick={() => getEnterResult(keyword)}>
 						<BiSearch size="28" />
 					</SearchBtn>
 				</label>
