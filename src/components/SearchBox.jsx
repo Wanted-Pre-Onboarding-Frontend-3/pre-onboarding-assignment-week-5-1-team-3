@@ -1,6 +1,4 @@
 import { useRef, useState, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { keywordState } from '../recoil/atom';
 
 import { BiSearch } from 'react-icons/bi';
 import {
@@ -17,9 +15,7 @@ import {
 
 import { ARROW_DOWN, ARROW_UP, ESCAPE, ENTER } from './Search.constant';
 
-const SearchResult = ({ result }) => {
-	const [keyword, setKeyword] = useRecoilState(keywordState);
-
+const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [isFocus, setIsFocus] = useState(false);
 	const [movePage, setMovePage] = useState(false);
 	const [resultIndex, setResultIndex] = useState(-1);

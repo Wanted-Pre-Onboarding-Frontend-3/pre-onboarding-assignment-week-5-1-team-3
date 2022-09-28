@@ -1,15 +1,11 @@
 import axiosInstance from './api';
 import { useEffect, useState } from 'react';
 
-import { useRecoilValue } from 'recoil';
-import { keywordState } from './recoil/atom';
-
 import styled from 'styled-components';
 import SearchBox from './components/SearchBox';
 
 const App = () => {
-	const keyword = useRecoilValue(keywordState);
-
+	const [keyword, setKeyword] = useState('');
 	const [results, setResults] = useState([]);
 
 	const getResults = async () => {
@@ -38,7 +34,7 @@ const App = () => {
 				<p>국내 모든 임상시험 검색하고 온라인으로 참여하기</p>
 			</Header>
 
-			<SearchBox result={results} />
+			<SearchBox result={results} keyword={keyword} setKeyword={setKeyword} />
 		</>
 	);
 };
