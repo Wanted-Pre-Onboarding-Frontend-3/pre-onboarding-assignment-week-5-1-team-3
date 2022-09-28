@@ -1,5 +1,5 @@
-import { useRecoilState } from 'recoil';
-import { keywordState, isTouchedState } from '../recoil/atom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { keywordState, isTouchedState, recentSearchState } from '../recoil/atom';
 
 import styled from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
@@ -7,13 +7,16 @@ import { BiSearch } from 'react-icons/bi';
 const SearchBox = () => {
 	const [isTouched, setIsTouched] = useRecoilState(isTouchedState);
 	const [keyword, setKeyword] = useRecoilState(keywordState);
+	const setRecentSearch = useSetRecoilState(recentSearchState);
 
 	const handleFocus = () => setIsTouched(true);
 	const handleBlur = () => setIsTouched(false);
 
 	const handleSearch = e => {
 		e.preventDefault();
+		setRecentSearch(keyword);
 		alert('검색 결과로 이동합니다.');
+		setKeyword('');
 	};
 
 	return (

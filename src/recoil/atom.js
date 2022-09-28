@@ -9,3 +9,8 @@ export const isTouchedState = atom({
 	key: 'isTouched',
 	default: false,
 });
+
+export const recentSearchState = atom({
+	key: 'recentSearch',
+	default: [],
+});
