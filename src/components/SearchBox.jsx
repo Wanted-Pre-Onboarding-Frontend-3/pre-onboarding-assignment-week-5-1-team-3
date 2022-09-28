@@ -3,14 +3,12 @@ import { useRecoilState } from 'recoil';
 import { keywordState } from '../recoil/atom';
 
 import { BiSearch } from 'react-icons/bi';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import {
 	SearchSection,
 	ResultSection,
 	SuggestionSection,
 	RecentSearch,
 	SearchBtn,
-	ClearBtn,
 	ResultList,
 	SearchIcon,
 	Results,
@@ -87,19 +85,18 @@ const SearchResult = ({ result }) => {
 	};
 
 	const recentSearchKeyword = (
-		<RecentSearch isShow={!keyword}>
+		<RecentSearch>
 			<p>최근 검색어</p>
-			{recentSearch.length > 0 && !keyword && (
-				<div onClick={hancldKeywords}>
-					{recentSearch.map((item, i) => (
-						// TODO : 클릭시 검색 input에 keyword 안들어감?
-						<button key={item + i}>
+			<div>
+				{recentSearch.length === 0 && <span>최근 검색어가 없습니다</span>}
+				{recentSearch.length > 0 &&
+					recentSearch?.map((item, i) => (
+						<button key={item + i} onClick={() => setKeyword(keyword)}>
 							<BiSearch size="20" />
 							{item}
 						</button>
 					))}
-				</div>
-			)}
+			</div>
 		</RecentSearch>
 	);
 
@@ -136,8 +133,6 @@ const SearchResult = ({ result }) => {
 		);
 	};
 
-	const clearResultBtn = keyword && <AiFillCloseCircle size="22" color="#aaa" onClick={() => setKeyword('')} />;
-
 	const noResult = keyword && result.length === 0 && <p>검색어 없음</p>;
 
 	return (
@@ -147,7 +142,7 @@ const SearchResult = ({ result }) => {
 					<SearchIcon size="22" />
 
 					<input
-						type="text"
+						type="search"
 						onChange={({ target }) => setKeyword(target.value)}
 						onKeyDown={handleArrowKey}
 						onFocus={() => setIsFocus(true)}
@@ -155,16 +150,15 @@ const SearchResult = ({ result }) => {
 						placeholder="질환명을 입력해주세요."
 					/>
 
-					<ClearBtn>{clearResultBtn}</ClearBtn>
-
 					<SearchBtn onClick={handleSearchClick}>
 						<BiSearch size="28" />
 					</SearchBtn>
 				</label>
 			</SearchSection>
 
-			<ResultSection isFocus={() => setIsFocus(true)} isShow={isFocus}>
-				{recentSearchKeyword}
+			<ResultSection isShow={isFocus}>
+				{!keyword && recentSearchKeyword}
+
 				{keyword && result && <p>추천 검색어</p>}
 
 				<Results ref={resultsRef}>
