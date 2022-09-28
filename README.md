@@ -167,7 +167,9 @@
 
 - 구현내용
 
-  - **제목** : 내용.
+  - data cache기능을 session storage를 통한 전역상태 key로 관리하였습니다.
+  - api call을 할때 query key를 통해 session storage에 key가 없을 경우 api호출로 데이터를 받아옵니다.
+  - 한번 받아온 데이터는 set session storage를 이용하여 검색 데이터를 추가하여 관리하였습니다.
   
   <img src='https://user-images.githubusercontent.com/27720475/192859862-be25f2ea-753c-4d14-a0a0-ad525ad63d75.png' width=500 />
 
