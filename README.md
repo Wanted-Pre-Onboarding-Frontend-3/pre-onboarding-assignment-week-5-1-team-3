@@ -10,7 +10,7 @@
 
 # 배포 링크
 
-- [링크](https://pre-onboarding-assignment-week-5-1-team-3-server-wfe1.vercel.app/)
+- [링크](https://pre-onboarding-assignment-week-5-1-team-3-kr77-ycs1m1yk.vercel.app/)
 
 <br>
 
@@ -66,72 +66,17 @@
 ```
 📦src
  ┣ 📂api
- ┃ ┣ 📜api.js
- ┃ ┣ 📜axios-instance.js
- ┃ ┣ 📜index.jsx
- ┃ ┗ 📜usersApi.js
- ┣ 📂assets
- ┃ ┣ 📜logo.png
- ┃ ┗ 📜logo_white.png
- ┣ 📂components
- ┃ ┣ 📂Users
- ┃ ┃ ┣ 📜UserAddForm.jsx
- ┃ ┃ ┗ 📜UserAddInput.jsx
- ┃ ┣ 📜Dashboard.jsx
- ┃ ┗ 📜Header.jsx
- ┣ 📂data
- ┃ ┣ 📜accountStatus.json
- ┃ ┣ 📜brokerFormat.json
- ┃ ┣ 📜brokers.json
  ┃ ┗ 📜index.js
- ┣ 📂hooks
- ┃ ┗ 📜useFormat.js
- ┣ 📂pages
- ┃ ┣ 📂AccountDetail
- ┃ ┃ ┣ 📂bread-crumbs
- ┃ ┃ ┃ ┗ 📜index.jsx
- ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┣ 📜Account.jsx
- ┃ ┃ ┃ ┣ 📜AccountUser.jsx
- ┃ ┃ ┃ ┣ 📜style.js
- ┃ ┃ ┃ ┗ 📜UserSetting.jsx
- ┃ ┃ ┗ 📜AccountDetail.jsx
- ┃ ┣ 📂accounts
- ┃ ┃ ┣ 📜accounts.constants.js
- ┃ ┃ ┣ 📜accounts.jsx
- ┃ ┃ ┗ 📜accounts.utils.jsx
- ┃ ┣ 📂Login
- ┃ ┃ ┣ 📜AuthRoute.jsx
- ┃ ┃ ┗ 📜Login.jsx
- ┃ ┣ 📂userdetail
- ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┣ 📜AccountListSection.jsx
- ┃ ┃ ┃ ┣ 📜common.js
- ┃ ┃ ┃ ┗ 📜UserInfoSection.jsx
- ┃ ┃ ┗ 📜UserDetail.jsx
- ┃ ┣ 📂Users
- ┃ ┃ ┣ 📂components
- ┃ ┃ ┃ ┣ 📜User.jsx
- ┃ ┃ ┃ ┣ 📜UserList.jsx
- ┃ ┃ ┃ ┣ 📜UserListPagination.jsx
- ┃ ┃ ┃ ┗ 📜UserMenu.jsx
- ┃ ┃ ┗ 📜Users.jsx
- ┃ ┗ 📜Main.jsx
- ┣ 📂store
- ┃ ┣ 📜account.js
- ┃ ┣ 📜user.js
- ┃ ┗ 📜userList.js
+ ┣ 📂components
+ ┃ ┣ 📜Search.constant.js
+ ┃ ┗ 📜SearchBox.jsx
+ ┣ 📂styles
+ ┃ ┣ 📜globalStyles.js
+ ┃ ┗ 📜serach-box.js
  ┣ 📂utils
- ┃ ┣ 📜account.util.js
- ┃ ┣ 📜constants.js
- ┃ ┣ 📜formatUsersData.js
- ┃ ┗ 📜storage.js
- ┣ 📜App.css
- ┣ 📜App.jsx
- ┣ 📜App.test.js
- ┣ 📜index.jsx
- ┣ 📜reportWebVitals.js
- ┗ 📜setupTests.js
+ ┃ ┗ 📜regex.js
+ ┣ 📜App.js
+ ┗ 📜index.js
 ```
 
 </details>
@@ -149,7 +94,8 @@
   <br>
   
 ### 2. 질환명 검색시 API 호출 통해서 검색어 추천 기능 구현
-   ![image](https://user-images.githubusercontent.com/81549337/192813572-491bf3fc-65e5-4317-9ea3-5a33a28eee53.png)
+
+<img src='https://user-images.githubusercontent.com/81549337/192813572-491bf3fc-65e5-4317-9ea3-5a33a28eee53.png' width=500 />
 
 - 사용자가 입력한 텍스트와 일치하는 부분 볼드처리
 
@@ -195,6 +141,15 @@
 
 - 논의내용
   - **검색 input의 키워드 리셋 방식** : 별도의 아이콘을 추가하는 대신 input search 타입 활용.
+  - **공백무시 검색**: api query로 검색하면 검색어 사이 공백을 무시하지 않음. 컴포넌트에서 정규식을 이용해 따로 처리함.
+    - 네이버
+    
+    <img src='https://user-images.githubusercontent.com/27720475/192835381-946d24f1-520d-422b-a2e0-3a20167db8ac.png' width=400 />
+    
+    - 앱
+    
+    <img src='https://user-images.githubusercontent.com/27720475/192835868-90336fc9-cb26-4803-b3a2-2302a4ac6b4e.png' width=400 />
+
 
 <br><br>
 
