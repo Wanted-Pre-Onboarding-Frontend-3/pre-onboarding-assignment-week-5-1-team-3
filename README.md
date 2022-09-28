@@ -222,11 +222,6 @@
   
 <br><br>
 
-### [ 로컬 캐싱 전략 ]
-  - **제목** : 내용.
-
-<br><br>
-
 # 컨벤션 링크
 
 [링크](https://sunhwaday.notion.site/c0ff2ba4723c42a289ab9021e8aa95ba)
