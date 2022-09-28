@@ -21,6 +21,7 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const [movePage, setMovePage] = useState(false);
 	const [resultIndex, setResultIndex] = useState(-1);
 	const [recentSearch, setRecentSearch] = useState([]);
+	const [isComposing, setIsComposing] = useState(false);
 
 	const resultsRef = useRef(null);
 
@@ -56,6 +57,9 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 	const lastList = resultIndex <= 0;
 
 	const handleArrowKey = e => {
+		if (isComposing) {
+			return;
+		}
 		switch (e.key) {
 			case ARROW_DOWN:
 				setResultIndex(resultIndex + 1);
@@ -144,6 +148,8 @@ const SearchResult = ({ result, keyword, setKeyword }) => {
 						type="search"
 						onChange={({ target }) => setKeyword(target.value)}
 						onKeyDown={handleArrowKey}
+						onCompositionStart={() => setIsComposing(true)}
+						onCompositionEnd={() => setIsComposing(false)}
 						onFocus={() => setIsFocus(true)}
 						value={keyword || ''}
 						placeholder="질환명을 입력해주세요."
